@@ -39,3 +39,11 @@
 
 # debug information files
 *.dwo
+
+# Visual studio files
+.vs
+*.sln
+*.vcxproj*
+
+# Intermediate folder
+int
