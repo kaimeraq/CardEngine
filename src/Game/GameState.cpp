@@ -11,21 +11,16 @@ bool GameState::AddPlayer(int index)
         return false;
     }
     
-    m_players[index] = Player(index);
+    m_players[index] = std::make_unique<Player>(index);
     m_playerOccupied[index] = true;
 
     return true;
 }
 
-void GameState::DealCardToPlayer(int index)
+const Player& GameState::GetPlayer(int index) const
 {
     assert(index >= 0 && index < MAX_NUM_PLAYERS);
-    m_players[index].AddCard(*m_deck.Draw());
-}
-
-void GameState::ShuffleDeck()
-{
-    m_deck.ShuffleDeck();
+    return *m_players[index];
 }
 
 bool GameState::HasScore(int index) const
@@ -46,7 +41,7 @@ int GameState::GetScore(int index) const
     return m_scores[index];
 }
 
-bool GameState::RecordScore(int index)
+bool GameState::RecordScore(int index, int score)
 {
     assert(index >= 0 && index < MAX_NUM_PLAYERS);
     
@@ -55,14 +50,8 @@ bool GameState::RecordScore(int index)
         return false;
     }
     
-    m_scores[index] = m_players[index].GetHandValue();
+    m_scores[index] = score;
     m_scoreRecorded[index] = true;
 
     return true;
-}
-
-const Hand& GameState::GetPlayerHand(int index) const
-{
-    assert(index >= 0 && index < MAX_NUM_PLAYERS);
-    return m_players[index].GetHand();
 }

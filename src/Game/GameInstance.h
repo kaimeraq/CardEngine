@@ -1,18 +1,30 @@
 #pragma once
 
-#include "IGameQuery.h"
+#include "Core/CoreMinimal.h"
 #include "GameMode.h"
+#include "Renderer/Renderer.h"
 
 class GameInstance
 {
-    GameLoopState m_state = GameLoopState::SELECT;
-    int m_numPlayers = 0;
-    GameResult m_result;
-    GameMode m_game{ 0 };
-
-    void PrintResult() const;
     bool Tick();
+    void Run();
+
+protected:
+    std::unique_ptr<Renderer> m_renderer;
+    std::unique_ptr<GameMode> m_mode;
+    int m_numPlayers = 0;
+
+    virtual void OnInit() {};
+    virtual bool OnTick() { return false; };
+    virtual std::unique_ptr<GameMode> CreateMode()
+    {
+        return std::make_unique<GameMode>(m_numPlayers);
+    }
 
 public:
-    void Run();
+    explicit GameInstance(std::unique_ptr<Renderer> renderer)
+        : m_renderer(std::move(renderer)) {}
+
+    ~GameInstance() = default;
+    void Start();
 };
