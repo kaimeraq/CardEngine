@@ -5,7 +5,7 @@
 
 class Logger {
 public:
-    static Logger& getInstance() {
+    static Logger& Get() {
         static Logger instance;
         return instance;
     }
@@ -33,4 +33,4 @@ private:
 };
 
 #define LOG(Category, Fmt, ...) \
-    Logger::getInstance().log(#Category, TEXT(Fmt), __VA_ARGS__)
+    Logger::Get().log(#Category, TEXT(Fmt), __VA_ARGS__)
