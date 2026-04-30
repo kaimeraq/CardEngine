@@ -1,18 +1,20 @@
 #pragma once
 
 #if defined(_WIN32) || defined(_WIN64)
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif
+    #ifndef PLATFORM_WINDOWS
+        #define PLATFORM_WINDOWS
+    #endif
 #endif
 
 #ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/OSWindows.h"
+    #include "Platform/Windows/OSWindows.h"
 #endif
 
-struct MessageNotify {
+struct MessageNotify 
+{
 public:
-    static void SendString(const GENCHAR* message) {
+    static void SendString(GENCSTR message) 
+    {
         PlatformNotifier::LocalPrint(message);
     }
 };
