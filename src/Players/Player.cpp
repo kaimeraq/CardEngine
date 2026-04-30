@@ -1,12 +1,12 @@
 #include "Player.h"
-#include "Core/CoreMinimal.h"
+#include "Core/Logger.h"
 
 #include <print>
+
+constexpr Category Cat_Game = Category::Gameplay;
 
 Player::Player(int index)
     : m_index(index)
 {
-#if defined(LOGGING_VERBOSE) && LOGGING_VERBOSE
-    LOG(VERBOSE, "Created player {}", m_index);
-#endif
+    LOG_VERBOSE(Cat_Game, "Created player {}", m_index);
 }
