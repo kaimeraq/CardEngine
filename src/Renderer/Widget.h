@@ -6,5 +6,5 @@ public:
     Widget() = default;
     virtual ~Widget() = default;
 
-    virtual void Draw() const {}
+    virtual void Render() const = 0;
 };

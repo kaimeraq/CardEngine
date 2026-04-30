@@ -2,6 +2,8 @@
 
 class DisplayComponent
 {
+public:
+    virtual ~DisplayComponent() = default;
 protected:
     virtual void OnPreDisplay() {}
     virtual void OnPostDisplay() {}
