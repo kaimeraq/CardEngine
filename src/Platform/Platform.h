@@ -7,7 +7,9 @@
 #endif
 
 #ifdef PLATFORM_WINDOWS
-    #include "Platform/Windows/OSWindows.h"
+    #include "Windows/OSWindows.h"
+#else
+    #include "PlatformGeneric.h"
 #endif
 
 struct MessageNotify 

@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "GameState.h"
-
-#include <cassert>
 
 bool GameState::AddPlayer(int index)
 {

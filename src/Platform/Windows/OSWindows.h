@@ -18,7 +18,7 @@
     #endif
 
     #if !defined(GENTEXT)
-        #if PLATFORM_GENCHAR_IS_GENCHAR16
+        #if defined(PLATFORM_GENCHAR_IS_GENCHAR16) && PLATFORM_GENCHAR_IS_GENCHAR16
             #define GENTEXT_REPLACE(x) u ## x
         #elif defined(UNICODE)
             #define GENTEXT_REPLACE(x) L ## x
