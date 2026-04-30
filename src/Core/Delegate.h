@@ -1,31 +1,41 @@
 #pragma once
 
-#include <iostream>
 #include <functional>
 #include <vector>
 #include <algorithm>
 
 // Singlecast Delegate
 template <typename Sig>
-class TDelegate;
+class Delegate;
 
 template <typename RetVal, typename... Params>
-class TDelegate<RetVal(Params...)>
+class Delegate<RetVal(Params...)>
 {
     using FuncType = std::function<RetVal(Params...)>;
 public:
-    void BindLambda(FuncType func) { callback = std::move(func); }
-    void Unbind() { callback = nullptr; }
-    bool IsBound() const { return (bool)callback; }
+    void BindLambda(FuncType func) 
+    { 
+        callback = std::move(func); 
+    }
 
-    RetVal Execute(Params... args) const
-    {
-        return callback(std::forward<Params>(args)...);
+    void Unbind() 
+    { 
+        callback = nullptr; 
+    }
+
+    bool IsBound() const 
+    { 
+        return (bool)callback; 
     }
 
     bool ExecuteIfBound(Params... args) const
     {
-        if (callback) { callback(std::forward<Params>(args)...); return true; }
+        if (callback) 
+        { 
+            callback(std::forward<Params>(args)...); 
+            return true; 
+        }
+
         return false;
     }
 
@@ -34,56 +44,78 @@ private:
 };
 
 // Multicast delegate
-struct FDelegateHandle
+struct DelegateHandle
 {
     size_t id = 0;
-    bool IsValid() const { return id != 0; }
+    
+    bool IsValid() const 
+    { 
+        return id != 0; 
+    }
 };
 
 template <typename Sig>
-class TMulticastDelegate;
+class MulticastDelegate;
 
 template <typename... Params>
-class TMulticastDelegate<void(Params...)>
+class MulticastDelegate<void(Params...)>
 {
-    using FDelegate = TDelegate<void(Params...)>;
+    using BoundDelegate = Delegate<void(Params...)>;
 
-    struct Entry { FDelegateHandle Handle; FDelegate Delegate; };
+    struct Entry 
+    { 
+        DelegateHandle Handle; 
+        BoundDelegate Delegate; 
+    };
 
 public:
-    FDelegateHandle Add(FDelegate delegate)
+    DelegateHandle Add(BoundDelegate delegate)
     {
-        FDelegateHandle handle{ ++nextId };
+        DelegateHandle handle{ ++nextId };
         entries.push_back({ handle, std::move(delegate) });
+
         return handle;
     }
 
     template <typename FunctorType>
-    FDelegateHandle AddLambda(FunctorType&& functor)
+    DelegateHandle AddLambda(FunctorType&& functor)
     {
-        FDelegate d;
+        BoundDelegate d;
         d.BindLambda(std::forward<FunctorType>(functor));
+
         return Add(std::move(d));
     }
 
-    bool Remove(FDelegateHandle handle)
+    bool Remove(DelegateHandle handle)
     {
-        auto it = std::remove_if(entries.begin(), entries.end(),
-            [&](const Entry& e) { return e.Handle.id == handle.id; });
+        auto it = std::remove_if(entries.begin(), entries.end(), [&](const Entry& e) 
+        { 
+            return e.Handle.id == handle.id; 
+        });
+
         bool found = (it != entries.end());
         entries.erase(it, entries.end());
+
         return found;
     }
 
-    void Clear() { entries.clear(); }
+    void Clear() 
+    { 
+        entries.clear(); 
+    }
 
-    bool IsBound() const { return !entries.empty(); }
+    bool IsBound() const 
+    { 
+        return !entries.empty(); 
+    }
 
     void Broadcast(Params... args) const
     {
         auto snapshot = entries;
         for (auto it = snapshot.rbegin(); it != snapshot.rend(); ++it)
+        {
             it->Delegate.ExecuteIfBound(args...);
+        }
     }
 
 private:
@@ -91,29 +123,29 @@ private:
     size_t nextId = 0;
 };
 
-#define DECLARE_DELEGATE(Name) \
-    typedef TDelegate<void()> Name;
+#define DELEGATE(Name) \
+    typedef Delegate<void()> Name;
 
-#define DECLARE_DELEGATE_RetVal(RetVal, Name) \
-    typedef TDelegate<RetVal()> Name;
+#define DELEGATE_RETURN(RetVal, Name) \
+    typedef Delegate<RetVal()> Name;
 
-#define DECLARE_DELEGATE_OneParam(Name, P1) \
-    typedef TDelegate<void(P1)> Name;
+#define DELEGATE_ONE_PARAM(Name, P1) \
+    typedef Delegate<void(P1)> Name;
 
-#define DECLARE_DELEGATE_TwoParams(Name, P1, P2) \
-    typedef TDelegate<void(P1, P2)> Name;
+#define DELEGATE_TWO_PARAMS(Name, P1, P2) \
+    typedef Delegate<void(P1, P2)> Name;
 
-#define DECLARE_DELEGATE_ThreeParams(Name, P1, P2, P3) \
-    typedef TDelegate<void(P1, P2, P3)> Name;
+#define DELEGATE_THREE_PARAMS(Name, P1, P2, P3) \
+    typedef Delegate<void(P1, P2, P3)> Name;
 
-#define DECLARE_MULTICAST_DELEGATE(Name) \
-    typedef TMulticastDelegate<void()> Name;
+#define MULTICAST_DELEGATE(Name) \
+    typedef MulticastDelegate<void()> Name;
 
-#define DECLARE_MULTICAST_DELEGATE_OneParam(Name, P1) \
-    typedef TMulticastDelegate<void(P1)> Name;
+#define MULTICAST_DELEGATE_ONE_PARAM(Name, P1) \
+    typedef MulticastDelegate<void(P1)> Name;
 
-#define DECLARE_MULTICAST_DELEGATE_TwoParams(Name, P1, P2) \
-    typedef TMulticastDelegate<void(P1, P2)> Name;
+#define MULTICAST_DELEGATE_TWO_PARAMS(Name, P1, P2) \
+    typedef MulticastDelegate<void(P1, P2)> Name;
 
-#define DECLARE_MULTICAST_DELEGATE_ThreeParams(Name, P1, P2, P3) \
-    typedef TMulticastDelegate<void(P1, P2, P3)> Name;
+#define MULTICAST_DELEGATE_THREE_PARAMS(Name, P1, P2, P3) \
+    typedef MulticastDelegate<void(P1, P2, P3)> Name;
