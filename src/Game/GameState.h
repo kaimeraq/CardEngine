@@ -15,6 +15,11 @@ protected:
     std::array<bool, MAX_NUM_PLAYERS> m_scoreRecorded{};
 
 public:
+    GameState() = default;
+    virtual ~GameState() = default;
+    GameState(const GameState&) = delete;
+    GameState& operator=(const GameState&) = delete;
+
     virtual bool AddPlayer(int index);
     const Player& GetPlayer(int index) const;
 

@@ -6,15 +6,19 @@
 class GameMode
 {
 protected:
-    int m_numPlayers = 0;
     std::unique_ptr<GameState> m_state;
+    int m_numPlayers = 0;
 
-public:
-    GameMode(int playerAmt)
-        : m_state(std::make_unique<GameState>()) 
+    explicit GameMode(int playerAmt, std::unique_ptr<GameState> state)
+        : m_state(std::move(state))
     {
         m_numPlayers = playerAmt < MAX_NUM_PLAYERS ? playerAmt : MAX_NUM_PLAYERS;
     }
+
+public:
+    virtual ~GameMode() = default;
+    GameMode(const GameMode&) = delete;
+    GameMode& operator=(const GameMode&) = delete;
 
     virtual void BeginPlay() {};
 };

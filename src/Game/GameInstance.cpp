@@ -1,8 +1,10 @@
 #include "GameInstance.h"
 
+constexpr Category Cat_Game = Category::Gameplay;
+
 void GameInstance::Start()
 {
-    LOG(ENGINE, "Starting engine...");
+    LOG(Cat_Game, "Starting engine...");
     Run();
 }
 
@@ -15,5 +17,5 @@ void GameInstance::Run()
 {
     OnInit();
     while (Tick());
-    LOG(ENGINE, "Closing engine...");
+    LOG(Cat_Game, "Closing engine...");
 }

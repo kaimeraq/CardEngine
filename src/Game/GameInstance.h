@@ -13,13 +13,10 @@ protected:
     std::unique_ptr<Renderer> m_renderer;
     std::unique_ptr<GameMode> m_mode;
     int m_numPlayers = 0;
-
+    
     virtual void OnInit() {};
     virtual bool OnTick() { return false; };
-    virtual std::unique_ptr<GameMode> CreateMode()
-    {
-        return std::make_unique<GameMode>(m_numPlayers);
-    }
+    virtual std::unique_ptr<GameMode> CreateMode() = 0;
 
 public:
     explicit GameInstance(std::unique_ptr<Renderer> renderer)
