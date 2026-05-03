@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameInstance.h"
 
 constexpr Category Cat_Game = Category::Gameplay;
