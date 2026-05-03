@@ -1,6 +1,8 @@
 # Engine
  
 A C++ static library engine. The engine handles core systems (platform, rendering, game framework) for my various projects.
+
+Showcases my understanding of UTF8 encoding/decoding.
  
 ## Prerequisites
  
