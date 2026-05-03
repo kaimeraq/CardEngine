@@ -13,7 +13,7 @@ Run `GenerateProject.bat` from the root of the repo. This will generate the proj
  
 ## Building
  
-Open `CardRoulette.sln` in Visual Studio, select a configuration (`Debug`, `Development`, or `Shipping`), and build.
+Open `Engine.sln` in Visual Studio, select a configuration (`Debug`, `Development`, or `Shipping`), and build.
 
 - `Debug` - No optimization (/MTd, /ZI, _DEBUG)
 - `Development` - Partial optimization (/MT, /Zi, NDEBUG)
@@ -21,4 +21,4 @@ Open `CardRoulette.sln` in Visual Studio, select a configuration (`Debug`, `Deve
  
 ## Cleaning
  
-Run `CleanProject.bat` to remove all generated project and build output files.
+Run `Clean.bat` to remove all generated project and build output files.
