@@ -2,25 +2,9 @@
 
 #include "Platform/PlatformGeneric.h"
 
-#if defined(_WIN32) || defined(_WIN64)
-    #ifndef PLATFORM_WINDOWS
-        #define PLATFORM_WINDOWS
-    #endif // !PLATFORM_WINDOWS
-#endif
-
 #ifdef PLATFORM_WINDOWS
-    #ifndef NOMINMAX
-        #define NOMINMAX
-    #endif
-
-    #ifndef WIN32_LEAN_AND_MEAN
-        #define WIN32_LEAN_AND_MEAN
-    #endif
-
     #if !defined(GENTEXT)
-        #if defined(PLATFORM_GENCHAR_IS_GENCHAR16) && PLATFORM_GENCHAR_IS_GENCHAR16
-            #define GENTEXT_REPLACE(x) u ## x
-        #elif defined(UNICODE)
+        #if defined(UNICODE)
             #define GENTEXT_REPLACE(x) L ## x
         #else
             #define GENTEXT(x) x
