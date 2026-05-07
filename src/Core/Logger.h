@@ -7,11 +7,12 @@
 #include <mutex>
 
 #ifndef LOGGING
-    #define LOGGING 2
+    #define LOGGING 1
 #endif
 
 enum class Category : uint8_t
 {
+    Assert,
     Application,
     Core,
     Gameplay,
@@ -128,6 +129,7 @@ private:
     {
         switch (cat)
         {
+        case Category::Assert:      return GENTEXT("ASSERT");
         case Category::Application: return GENTEXT("LogApp");
         case Category::Core:        return GENTEXT("LogCore");
         case Category::Gameplay:    return GENTEXT("LogGameplay");
@@ -160,21 +162,3 @@ private:
         }
     }
 };
-
-#define LOG(Cat, Fmt, ...) \
-    Logger::Get().log(Cat, Verbosity::Log, GENTEXT(Fmt), __VA_ARGS__)
-
-#define LOG_VERBOSE(Cat, Fmt, ...) \
-    Logger::Get().log(Cat, Verbosity::Verbose, GENTEXT(Fmt), __VA_ARGS__)
-
-#define CRASH_FATAL(Cat, Fmt, ...) \
-    do { \
-        Logger::Get().log(Cat, Verbosity::Fatal, GENTEXT(Fmt), __VA_ARGS__); \
-        std::abort(); \
-    } while(0)
-
-#define LOG_ERROR(Cat, Fmt, ...) \
-    Logger::Get().log(Cat, Verbosity::Error, GENTEXT(Fmt), __VA_ARGS__)
-
-#define LOG_WARNING(Cat, Fmt, ...) \
-    Logger::Get().log(Cat, Verbosity::Warning, GENTEXT(Fmt), __VA_ARGS__)

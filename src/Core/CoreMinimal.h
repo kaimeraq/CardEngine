@@ -2,6 +2,7 @@
 
 #include "Engine.h"
 #include "Config.h"
-#include "Logger.h"
+#include "Macros/LogMacros.h"
+#include "Macros/ErrorMacros.h"
 
 constexpr int MAX_NUM_PLAYERS = 4;
